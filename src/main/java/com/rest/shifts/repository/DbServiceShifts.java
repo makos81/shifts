@@ -17,11 +17,16 @@ public class DbServiceShifts {
         return shiftsRepository.findAll();
     }
 
-    public Optional<Shift> getShiftByWorkerId(int workerId){
-        return shiftsRepository.findByWorker_Id(workerId);
+    public Shift getShiftByWorkerId(int workerId){
+        return shiftsRepository.getActiveShiftForWorker(workerId);
     }
 
     public void saveShift(Shift shift){
         shiftsRepository.save(shift);
     }
+
+    public List<Shift> getAllShiftsForWorker(int workerId){
+        return shiftsRepository.getShiftsForWorker(workerId);
+    }
+
 }

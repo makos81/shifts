@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.temporal.ChronoUnit;
-
-import static javax.xml.datatype.DatatypeConstants.HOURS;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/shifts")
@@ -27,17 +26,35 @@ public class ShiftsController {
     private DbServiceShifts dbServiceShifts;
     @Autowired
     private ShiftsMapper shiftsMapper;
+    @Autowired
+    private DbServiceWorker dbServiceWorker;
 
     @RequestMapping(method = RequestMethod.POST, value = "createShift", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addShift(@RequestBody ShiftDto shiftDto) throws Exception{
-        int workerId = shiftDto.getWorkerId();
-        Shift currentShift = dbServiceShifts.getShiftByWorkerId(workerId).orElseThrow(WorkerNotFoundException::new);
-        long hours = ChronoUnit.HOURS.between(shiftDto.getTo(), currentShift.getFrom());
-        if(hours < 8){
-            throw new TwoShiftsInRowException();
-        }else{
+        Shift shift = shiftsMapper.mapToShift(shiftDto);
+        int workerId = shift.getWorkerId();
+        dbServiceWorker.getById(workerId).orElseThrow(WorkerNotFoundException::new);
+        Shift currentShift = dbServiceShifts.getShiftByWorkerId(workerId);
+        if(currentShift==null){
             dbServiceShifts.saveShift(shiftsMapper.mapToShift(shiftDto));
+        }else{
+            long hours = ChronoUnit.HOURS.between(shiftDto.getTo(), currentShift.getFrom());
+            if(hours < 8){
+                throw new TwoShiftsInRowException();
+            }else{
+                dbServiceShifts.saveShift(shiftsMapper.mapToShift(shiftDto));
+            }
         }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "getAllShiftsForWorker")
+    public List<Shift> getListOfShiftsForWorkerId(int workerId){
+        return dbServiceShifts.getAllShiftsForWorker(workerId);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value="getAllShifts")
+    public List<Shift> getListOfAllShifts(){
+        return dbServiceShifts.getAllShifts();
     }
 
 }

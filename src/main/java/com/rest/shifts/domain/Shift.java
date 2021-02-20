@@ -10,9 +10,18 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@NoArgsConstructor
-@Getter
+@AllArgsConstructor
 @Table(name="SHIFTS")
+@NamedNativeQuery(
+        name = "Shift.getActiveShiftForWorker",
+        query = "SELECT * FROM SHIFTS WHERE id=:ID " +
+                "ORDER BY ID DESC LIMIT 1",
+        resultClass = Shift.class
+)
+@NamedQuery(
+        name = "Shift.getShiftsForWorker",
+        query = "FROM Shift WHERE workerId=:ID"
+)
 public class Shift {
     @Id
     @GeneratedValue
@@ -26,9 +35,28 @@ public class Shift {
     @Column(name="WORKER_ID")
     private int workerId;
 
+    public Shift() {
+    }
+
     public Shift(LocalDateTime from, LocalDateTime to, int workerId) {
         this.from = from;
         this.to = to;
         this.workerId = workerId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public LocalDateTime getFrom() {
+        return from;
+    }
+
+    public LocalDateTime getTo() {
+        return to;
+    }
+
+    public int getWorkerId() {
+        return workerId;
     }
 }

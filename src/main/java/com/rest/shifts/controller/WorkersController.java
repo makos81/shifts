@@ -25,8 +25,8 @@ public class WorkersController {
     WorkerMapper workerMapper;
 
     @RequestMapping(method = RequestMethod.GET, value = "getWorker")
-    public Worker getWorker(int workerId) throws ShiftNotFoundException{
-        return dbServiceWorker.getById(workerId).orElseThrow(ShiftNotFoundException::new);
+    public Worker getWorker(int workerId) throws WorkerNotFoundException{
+        return dbServiceWorker.getById(workerId).orElseThrow(WorkerNotFoundException::new);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "createWorker", consumes = MediaType.APPLICATION_JSON_VALUE)
