@@ -14,26 +14,37 @@ import java.util.Date;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class DbServiceTest {
+public class DbServiceWorkerTest {
     @Autowired
     private ShiftsRepository shiftsRepository;
     @Autowired
     private WorkerRepository workerRepository;
 
     @Test
-    public void saveTest(){
+    public void savingShift(){
         //given
-        Worker worker = new Worker("maciej", "ra");
-        Shift shift = new Shift();
-        shift.setFrom(new Date());
-        shift.setWorker(1);
+        Shift shift = new Shift(LocalDateTime.of(2021,02,20,10,0),
+                LocalDateTime.of(2021,02,20,18,0),1);
 
         //when
-        workerRepository.save(worker);
         shiftsRepository.save(shift);
         int id = shift.getId();
         //then
         Assertions.assertNotEquals(0, id);
+        shiftsRepository.deleteById(id);
+    }
+
+    @Test
+    public void savingWorker(){
+        //given
+        Worker worker = new Worker("maciej", "ra");
+
+        //when
+        workerRepository.save(worker);
+        int id = worker.getId();
+        //then
+        Assertions.assertNotEquals(0, id);
+        workerRepository.deleteById(id);
 
     }
 }

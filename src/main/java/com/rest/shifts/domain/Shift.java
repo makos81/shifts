@@ -3,64 +3,32 @@ package com.rest.shifts.domain;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
+@NoArgsConstructor
+@Getter
 @Table(name="SHIFTS")
 public class Shift {
-    private int id;
-    private Date from;
-    private Date to;
-    private int workerId;
-
-    public Shift(){
-
-    }
-
-    public Shift(Date from, Date to) {
-        this.from = from;
-        this.to = to;
-    }
-
     @Id
     @GeneratedValue
     @NotNull
     @Column(name = "ID", unique = true)
-    public int getId() {
-        return id;
-    }
-
-    @Column(name="FROM")
-    public Date getFrom() {
-        return from;
-    }
-
-    @Column(name="TO")
-    public Date getTo() {
-        return to;
-    }
-
+    private int id;
+    @Column(name="STARTING_DATETIME")
+    private LocalDateTime from;
+    @Column(name="END_DATETIME")
+    private LocalDateTime to;
     @Column(name="WORKER_ID")
-    public int getWorker() {
-        return workerId;
-    }
+    private int workerId;
 
-    public void setFrom(Date from) {
+    public Shift(LocalDateTime from, LocalDateTime to, int workerId) {
         this.from = from;
-    }
-
-    public void setTo(Date to) {
         this.to = to;
-    }
-
-    public void setWorker(int worker) {
-        this.workerId = worker;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.workerId = workerId;
     }
 }
