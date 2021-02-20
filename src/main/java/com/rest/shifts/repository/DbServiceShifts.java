@@ -4,29 +4,28 @@ import com.rest.shifts.domain.Shift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
+/* TODO: do wywalenia jak dla mnie :-) */
 @Service
 public class DbServiceShifts {
     @Autowired
-    ShiftsRepository shiftsRepository;
+    ShiftRepository shiftRepository;
 
     public List<Shift> getAllShifts(){
-        return shiftsRepository.findAll();
+        return shiftRepository.findAll();
     }
 
     public Shift getShiftByWorkerId(int workerId){
-        return shiftsRepository.getActiveShiftForWorker(workerId);
+        return shiftRepository.getActiveShiftForWorker(workerId);
     }
 
     public void saveShift(Shift shift){
-        shiftsRepository.save(shift);
+        shiftRepository.save(shift);
     }
 
     public List<Shift> getAllShiftsForWorker(int workerId){
-        return shiftsRepository.getShiftsForWorker(workerId);
+        return shiftRepository.getShiftsForWorker(workerId);
     }
 
 }

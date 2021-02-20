@@ -1,7 +1,4 @@
-package com.rest.shifts.domain;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+package com.rest.shifts.common;
 
 import java.time.LocalDateTime;
 

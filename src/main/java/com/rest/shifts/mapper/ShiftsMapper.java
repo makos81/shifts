@@ -1,7 +1,7 @@
 package com.rest.shifts.mapper;
 
 import com.rest.shifts.domain.Shift;
-import com.rest.shifts.domain.ShiftDto;
+import com.rest.shifts.common.ShiftDto;
 import org.springframework.stereotype.Service;
 
 @Service

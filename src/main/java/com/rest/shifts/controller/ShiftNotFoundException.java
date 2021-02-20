@@ -1,4 +1,4 @@
 package com.rest.shifts.controller;
 
-public class ShiftNotFoundException extends Exception{
+public class ShiftNotFoundException extends RuntimeException{
 }

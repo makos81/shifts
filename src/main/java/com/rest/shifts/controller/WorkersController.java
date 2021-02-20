@@ -1,10 +1,10 @@
 package com.rest.shifts.controller;
 
+import com.rest.shifts.common.WorkerNotFoundException;
 import com.rest.shifts.domain.Worker;
-import com.rest.shifts.domain.WorkerDto;
+import com.rest.shifts.common.WorkerDto;
 import com.rest.shifts.mapper.WorkerMapper;
 import com.rest.shifts.repository.DbServiceWorker;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,13 +19,19 @@ import java.util.List;
 @RequestMapping("/v1/workers")
 @RequiredArgsConstructor
 public class WorkersController {
+
+    /* bym zrobił analogicznie do ShiftsController - wywaliłbym te workery jeśli one nie robią nic poza wywołaniem repozytorium */
+    /* jeśli chcesz tworzyć klasy serwisowe to nie w warstwie infrastrukturalnej, którą jest na pewno pakiet repository. Serwisy
+       są warstwą aplikacyjną i należą de facto do domeny [core aplikacji można postrzegać jako model domenowy (encje biznesowe) + właśnie serwisy aplikacyjne, które wywołują
+       warstwę tę niższą, czyli warstwę bazodanową, tutaj: repozytoria
+     */
     @Autowired
     DbServiceWorker dbServiceWorker;
     @Autowired
     WorkerMapper workerMapper;
 
     @RequestMapping(method = RequestMethod.GET, value = "getWorker")
-    public Worker getWorker(int workerId) throws WorkerNotFoundException{
+    public Worker getWorker(int workerId) throws WorkerNotFoundException {
         return dbServiceWorker.getById(workerId).orElseThrow(WorkerNotFoundException::new);
     }
 

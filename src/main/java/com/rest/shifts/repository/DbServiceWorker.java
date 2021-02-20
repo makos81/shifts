@@ -1,13 +1,14 @@
 package com.rest.shifts.repository;
 
-import com.rest.shifts.domain.Shift;
 import com.rest.shifts.domain.Worker;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
+/* TODO: moim zdaniem do wywalenia, nie jest ptorzebny ten serwis (robi to samo co repozytorium). Jeśli chcesz mieć serwis, to na pewno i tak musisz
+         go przenieść do pakietu services (utworzyłem takowy) :)
+ */
 @Service
 public class DbServiceWorker {
     @Autowired

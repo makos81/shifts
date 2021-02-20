@@ -1,4 +1,4 @@
-package com.rest.shifts.domain;
+package com.rest.shifts.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

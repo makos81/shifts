@@ -10,13 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class DbServiceWorkerTest {
     @Autowired
-    private ShiftsRepository shiftsRepository;
+    private ShiftRepository shiftRepository;
     @Autowired
     private WorkerRepository workerRepository;
 
@@ -27,11 +26,11 @@ public class DbServiceWorkerTest {
                 LocalDateTime.of(2021,02,20,18,0),1);
 
         //when
-        shiftsRepository.save(shift);
+        shiftRepository.save(shift);
         int id = shift.getId();
         //then
         Assertions.assertNotEquals(0, id);
-        shiftsRepository.deleteById(id);
+        shiftRepository.deleteById(id);
     }
 
     @Test

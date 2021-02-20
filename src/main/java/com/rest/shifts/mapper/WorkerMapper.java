@@ -1,7 +1,7 @@
 package com.rest.shifts.mapper;
 
 import com.rest.shifts.domain.Worker;
-import com.rest.shifts.domain.WorkerDto;
+import com.rest.shifts.common.WorkerDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

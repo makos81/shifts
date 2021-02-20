@@ -32,6 +32,10 @@ public class Shift {
     private LocalDateTime from;
     @Column(name="END_DATETIME")
     private LocalDateTime to;
+
+    /* [TODO] relacje się trochę inaczej robi. Wygooglaj jak się robi @OneToMany w hibernate'cie, bo teraz to taki udawany klucz obcy masz, hibernate nie
+             stworzy Ci constrainta FK dla takiego zapiu jak poniżej.
+     */
     @Column(name="WORKER_ID")
     private int workerId;
 
