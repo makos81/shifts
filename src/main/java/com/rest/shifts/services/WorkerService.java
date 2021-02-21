@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WorkerService {
+    private static final int HOURS_THRESHOLD = 8;
     @Autowired
     private ShiftRepository shiftRepository;
     @Autowired
@@ -35,20 +36,33 @@ public class WorkerService {
         Shift currentShift = shiftRepository.findById(shiftId).orElseThrow(ShiftAlreadyDefined::new);
         ShiftDto currentShiftDto = shiftsMapper.mapToDto(currentShift);
         Worker worker = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
+
         List<Shift> shiftList = worker.getShifts();
-        if (shiftList.size()==0) {
-            currentShiftDto.setWorkerList(worker);
-            shiftRepository.save(shiftsMapper.mapToShift(currentShiftDto));
+        if (workerDoesNotHaveAnyShifts(shiftList)) {
+            saveShift(currentShiftDto, worker);
         } else {
             shiftList.sort(Comparator.comparing(Shift::getTo));
             Shift latestShift = shiftList.get(shiftList.size()-1);
             ShiftDto latestShiftDto = shiftsMapper.mapToDto(latestShift);
-            long hours = ChronoUnit.HOURS.between(latestShift.getTo(), latestShift.getFrom());
-            if (hours < 8) {
+
+            if (hoursBetweenCurrentAndPassedShift(latestShift) < HOURS_THRESHOLD) {
                 throw new TwoShiftsInRowException();
             } else {
                 shiftRepository.save(shiftsMapper.mapToShift(latestShiftDto));
             }
         }
+    }
+
+    private long hoursBetweenCurrentAndPassedShift(Shift latestShift) {
+        return ChronoUnit.HOURS.between(latestShift.getTo(), latestShift.getFrom());
+    }
+
+    private void saveShift(ShiftDto currentShiftDto, Worker worker) {
+        currentShiftDto.setWorkerList(worker);
+        shiftRepository.save(shiftsMapper.mapToShift(currentShiftDto));
+    }
+
+    private boolean workerDoesNotHaveAnyShifts(List<Shift> shiftList) {
+        return shiftList.size()==0;
     }
 }

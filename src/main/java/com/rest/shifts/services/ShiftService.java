@@ -20,8 +20,9 @@ public class ShiftService {
 
     public void addShift(ShiftDto shiftDto) throws ShiftAlreadyDefined {
         Shift shift = shiftsMapper.mapToShift(shiftDto);
-        if(shiftRepository.getShift(shift.getFrom(), shift.getTo())!=null){
+        Shift existingShift = shiftRepository.getShift(shift.getFrom(), shift.getTo());
+        if(existingShift != null) {
             throw new ShiftAlreadyDefined();
         }
-        Shift currentShift = shiftRepository.save(shift);}
+        shiftRepository.save(shift);}
 }
