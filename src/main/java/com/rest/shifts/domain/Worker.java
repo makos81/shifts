@@ -43,11 +43,11 @@ public class Worker {
         return null;
     }
 
-    public LocalDateTime startOfCurrentShif() {
+    public LocalDateTime startOfCurrentShift() {
         return currentShift().getFrom();
     }
 
-    public LocalDateTime sendOfCurrentShif() {
+    public LocalDateTime sendOfCurrentShift() {
         return currentShift().getTo();
     }
 

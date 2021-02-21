@@ -2,12 +2,9 @@ package com.rest.shifts.domain;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @AllArgsConstructor
@@ -53,7 +50,7 @@ public class Shift {
 
     public void assigneTo(Worker worker) {
         // tu metody biznesowe, czyli np.: czy nie próbuję przypisać pracownikowi już przypisanej mu zmiany, mogłobyto wyglądać tak mniej więcej:
-        if(worker.startOfCurrentShif().isEqual(from) && worker.sendOfCurrentShif().isEqual(to)) {
+        if(worker.startOfCurrentShift().isEqual(from) && worker.sendOfCurrentShift().isEqual(to)) {
             throw new RuntimeException("Worker has already assigned shift");
         }
         // i teraz czy nie jest to druga zmiana z rzędu.
