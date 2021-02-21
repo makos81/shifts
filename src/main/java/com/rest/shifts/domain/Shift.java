@@ -50,6 +50,7 @@ public class Shift {
 
     public void assignTo(Worker worker) {
         // tu reguły biznesowe, czyli np.: czy nie próbuję przypisać pracownikowi już przypisanej mu zmiany, mogłobyto wyglądać tak mniej więcej:
+        // ten if tylko na wzór
         if(worker.startOfCurrentShift().isEqual(from) && worker.endOfCurrentShift().isEqual(to)) {
             throw new RuntimeException("Worker has already assigned shift");
         }
