@@ -23,7 +23,7 @@ public class DbServiceWorkerTest {
     public void savingShift(){
         //given
         Shift shift = new Shift(LocalDateTime.of(2021,02,20,10,0),
-                LocalDateTime.of(2021,02,20,18,0),1);
+                LocalDateTime.of(2021,02,20,18,0));
 
         //when
         shiftRepository.save(shift);

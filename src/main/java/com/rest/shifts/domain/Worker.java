@@ -14,57 +14,54 @@ import javax.persistence.*;
 @Entity
 @Table(name="WORKER")
 public class Worker {
-    @Id
-    @GeneratedValue
-    @NotNull
-    @Column(name = "ID", unique = true)
     private int id;
-    @Column(name="FIRST_NAME")
     private String firstName;
-    @Column(name="LAST_NAME")
     private String lastName;
-
-    @OneToMany(mappedBy="worker")
-    private List<Shift> shifts = new ArrayList<>();
+    private List<Shift> shifts;
 
     public Worker(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        shifts = new ArrayList<>();
     }
 
     public Worker() {
     }
 
-    public List<Shift> allAssignedShifts() {
-        return shifts;
-    }
-
-    private Shift currentShift() {
-        // aktualna zmiana. co jest aktualna zmianą? ostatnio przypisana pracownikowi?
-        // jeśli tak, to:
-        if(shifts == null || shifts.isEmpty()) {
-            return null;
-        }
-        return shifts.get(shifts.size()-1);
-    }
-
-    public LocalDateTime startOfCurrentShift() {
-        return currentShift().getFrom();
-    }
-
-    public LocalDateTime endOfCurrentShift() {
-        return currentShift().getTo();
-    }
-
+    @Id
+    @GeneratedValue
+    @NotNull
+    @Column(name = "WORKER_ID", unique = true)
     public int getId() {
         return id;
     }
-
+    @Column(name="FIRST_NAME")
     public String getFirstName() {
         return firstName;
     }
-
+    @Column(name="LAST_NAME")
     public String getLastName() {
         return lastName;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "workerList")
+    public List<Shift> getShifts() {
+        return shifts;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setShifts(List<Shift> shifts) {
+        this.shifts = shifts;
     }
 }
