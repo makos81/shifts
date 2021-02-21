@@ -1,15 +1,15 @@
 package com.rest.shifts.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="WORKER")
@@ -44,7 +44,8 @@ public class Worker {
         return lastName;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "workerList")
+    @ManyToMany(mappedBy = "workerList")
+    @JsonIgnore // https://dzone.com/articles/introduction-to-spring-data-jpa-part-4-bidirection CTRL+F i szukaj StackOverflow, taki był błąd, dodałem to JsonIgnore, ale nie testowałem bo mi docker z postgresem coś padł :) Powinno działać
     public List<Shift> getShifts() {
         return shifts;
     }

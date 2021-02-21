@@ -5,6 +5,7 @@ import com.rest.shifts.common.ShiftValidator;
 import com.rest.shifts.domain.Shift;
 import com.rest.shifts.common.ShiftDto;
 import com.rest.shifts.repository.ShiftRepository;
+import com.rest.shifts.repository.WorkerRepository;
 import com.rest.shifts.services.ShiftService;
 import com.rest.shifts.services.WorkerService;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +30,8 @@ public class ShiftsController {
     private ShiftService shiftService;
     @Autowired
     private ShiftRepository shiftRepository;
+    @Autowired
+    private WorkerRepository workerRepository;
 
     @RequestMapping(method = RequestMethod.POST, value = "createShift", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addShift(@RequestBody ShiftDto shiftDto) {
@@ -43,12 +47,19 @@ public class ShiftsController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "getAllShiftsForWorker")
-    public List<Shift> getListOfShiftsForWorkerId(int workerId){
-        return workerService.getShiftsForWorker(workerId);
+//    @RequestMapping(method = RequestMethod.GET, value = "getAllShiftsForWorker")
+//    public List<Shift> getListOfShiftsForWorkerId(int workerId){
+//        return workerService.getShiftsForWorker(workerId);
+//    }
+
+    /* nie powinien zwracac encji tylko dto! */
+    /* odpytanie przykładowe: http://localhost:8080/v1/workers/workerShifts/1 dla workerId=1 */
+    @RequestMapping(method = RequestMethod.GET, value="worker/{workerId}")
+    public ResponseEntity<List<Shift>> assignShiftToWorker(@PathVariable("workerId") int workerId){
+        return ResponseEntity.ok(workerRepository.findById(workerId).get().getShifts());
     }
 
-    @RequestMapping(method = RequestMethod.GET, value="getAllShifts")
+    @RequestMapping(method = RequestMethod.GET, value="/getAllShifts")
     public List<Shift> getListOfAllShifts(){
         return shiftRepository.findAll();
     }
