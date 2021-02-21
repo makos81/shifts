@@ -48,6 +48,8 @@ public class Shift {
         this.workerId = workerId;
     }
 
+    // te metode potem wywolasz w serwisie. I w serwisie już nie będziesz musiał sprawdzać reguł typu czy to druga zmiana z rzedu czy nie,
+    // bo ta metoda biznesowa to kontroluje. Nikt nigdy nie zapomni zatem sprawdzic tych regul bo sa one zakotwiczone tutaj.
     public void assignTo(Worker worker) {
         // tu reguły biznesowe, czyli np.: czy nie próbuję przypisać pracownikowi już przypisanej mu zmiany, mogłobyto wyglądać tak mniej więcej:
         // ten if tylko na wzór
