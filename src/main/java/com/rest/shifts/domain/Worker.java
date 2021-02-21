@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,8 +40,12 @@ public class Worker {
     }
 
     private Shift currentShift() {
-        // aktualna zmiana
-        return null;
+        // aktualna zmiana. co jest aktualna zmianą? ostatnio przypisana pracownikowi?
+        // jeśli tak, to:
+        if(shifts == null || shifts.isEmpty()) {
+            return null;
+        }
+        return shifts.get(shifts.size()-1);
     }
 
     public LocalDateTime startOfCurrentShift() {
