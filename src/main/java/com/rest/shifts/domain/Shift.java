@@ -39,7 +39,7 @@ public class Shift {
     @Column(name="WORKER_ID")
     private int workerId;
 
-    // adnotacje
+    @ManyToOne(fetch = FetchType.LAZY)
     private Worker worker;
 
     public Shift() {

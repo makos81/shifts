@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
 @Table(name="WORKER")
 public class Worker {
     @Id
@@ -24,7 +23,7 @@ public class Worker {
     @Column(name="LAST_NAME")
     private String lastName;
 
-    // adnotacje
+    @OneToMany(mappedBy="worker")
     private List<Shift> shifts = new ArrayList<>();
 
     public Worker(String firstName, String lastName) {
