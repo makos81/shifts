@@ -42,6 +42,9 @@ public class Shift {
     public Shift() {
     }
 
+    // tu będzie w takim razie nie int workerId tylko Worker worke, a w zasadzie to Workera z konstruktora można wyjebać i zostawić tylko
+    // w assignTo. Zależy czy klasa Shift wymaga to działania workera - no chyba nie, bo można dodać po prostu zmianę, bez przypisanego pracownika
+    // zatem w konstruktorze nie powinno być Workera, tylko w razie potrzeby przekazujemy go do metody assignTo
     public Shift(LocalDateTime from, LocalDateTime to, int workerId) {
         this.from = from;
         this.to = to;
