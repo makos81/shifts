@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name="SHIFTS")
 @NamedNativeQuery(
         name = "Shift.getActiveShiftForWorker",
-        query = "SELECT * FROM SHIFTS WHERE id=:ID " +
+        query = "SELECT * FROM SHIFTS WHERE worker_id=:ID " +
                 "ORDER BY ID DESC LIMIT 1",
         resultClass = Shift.class
 )
