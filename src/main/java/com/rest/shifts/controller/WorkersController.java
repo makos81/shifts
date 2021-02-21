@@ -25,6 +25,8 @@ public class WorkersController {
     WorkerRepository workerRepository;
     @Autowired
     WorkerMapper workerMapper;
+    @Autowired
+    WorkerService workerService;
 
     @RequestMapping(method = RequestMethod.GET, value = "getWorker")
     public Worker getWorker(int workerId) throws WorkerNotFoundException {
@@ -57,6 +59,6 @@ public class WorkersController {
 
     @RequestMapping(method = RequestMethod.POST, value="assignShiftToWorker")
     public void assignShiftToWorker(int shiftId, int workerId){
-
+        workerService.assignShiftToWorker(workerId, shiftId);
     }
 }

@@ -36,9 +36,10 @@ public class Shift {
     // tu będzie w takim razie nie int workerId tylko Worker worke, a w zasadzie to Workera z konstruktora można wyjebać i zostawić tylko
     // w assignTo. Zależy czy klasa Shift wymaga to działania workera - no chyba nie, bo można dodać po prostu zmianę, bez przypisanego pracownika
     // zatem w konstruktorze nie powinno być Workera, tylko w razie potrzeby przekazujemy go do metody assignTo
-    public Shift(LocalDateTime from, LocalDateTime to) {
+    public Shift(LocalDateTime from, LocalDateTime to, List<Worker> workerList) {
         this.from = from;
         this.to = to;
+        this.workerList = workerList;
     }
 
     // te metode potem wywolasz w serwisie. I w serwisie już nie będziesz musiał sprawdzać reguł typu czy to druga zmiana z rzedu czy nie,

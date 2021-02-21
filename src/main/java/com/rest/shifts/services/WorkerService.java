@@ -14,13 +14,16 @@ import java.util.List;
 
 import com.rest.shifts.repository.ShiftRepository;
 import com.rest.shifts.repository.WorkerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WorkerService {
-
+    @Autowired
     private ShiftRepository shiftRepository;
+    @Autowired
     private WorkerRepository workerRepository;
+    @Autowired
     private ShiftsMapper shiftsMapper;
 
     public List<Shift> getShiftsForWorker(int workerId) {
@@ -34,6 +37,7 @@ public class WorkerService {
         Worker worker = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
         List<Shift> shiftList = worker.getShifts();
         if (shiftList.size()==0) {
+            currentShiftDto.setWorkerList(worker);
             shiftRepository.save(shiftsMapper.mapToShift(currentShiftDto));
         } else {
             shiftList.sort(Comparator.comparing(Shift::getTo));

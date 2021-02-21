@@ -16,7 +16,8 @@ public class ShiftsMapper {
     public Shift mapToShift(ShiftDto shiftDto){
         return new Shift(
                 shiftDto.getFrom(),
-                shiftDto.getTo()
+                shiftDto.getTo(),
+                shiftDto.getWorkerList()
         );
     }
 }

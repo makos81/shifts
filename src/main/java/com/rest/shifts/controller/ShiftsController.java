@@ -9,6 +9,7 @@ import com.rest.shifts.services.ShiftService;
 import com.rest.shifts.services.WorkerService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/shifts")
 @RequiredArgsConstructor
 public class ShiftsController {
+    @Autowired
     private WorkerService workerService;
+    @Autowired
     private ShiftService shiftService;
+    @Autowired
     private ShiftRepository shiftRepository;
 
     @RequestMapping(method = RequestMethod.POST, value = "createShift", consumes = MediaType.APPLICATION_JSON_VALUE)
