@@ -54,6 +54,8 @@ public class Shift {
             throw new RuntimeException("Worker has already assigned shift");
         }
         // i teraz czy nie jest to druga zmiana z rzędu.
+        // jakbyś chciał tutaj na przykład się przeiterować przez wszystkie zmiany przypisane do pracownika to użyj worker.allAssignedShifts, jakbyś potrzebował innych to dodawaj swoje. dzięki
+        // temu mamy enkapsulację i jasne nazwy metod.
     }
 
     public int getId() {
