@@ -48,7 +48,7 @@ public class Shift {
         this.workerId = workerId;
     }
 
-    public void assigneTo(Worker worker) {
+    public void assignTo(Worker worker) {
         // tu metody biznesowe, czyli np.: czy nie próbuję przypisać pracownikowi już przypisanej mu zmiany, mogłobyto wyglądać tak mniej więcej:
         if(worker.startOfCurrentShift().isEqual(from) && worker.sendOfCurrentShift().isEqual(to)) {
             throw new RuntimeException("Worker has already assigned shift");
