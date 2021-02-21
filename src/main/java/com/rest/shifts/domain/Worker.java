@@ -38,7 +38,7 @@ public class Worker {
         return shifts;
     }
 
-    public Shift currentShift() {
+    private Shift currentShift() {
         // aktualna zmiana
         return null;
     }
@@ -47,7 +47,7 @@ public class Worker {
         return currentShift().getFrom();
     }
 
-    public LocalDateTime sendOfCurrentShift() {
+    public LocalDateTime endOfCurrentShift() {
         return currentShift().getTo();
     }
 
