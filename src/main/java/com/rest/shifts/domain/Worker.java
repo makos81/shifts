@@ -41,6 +41,7 @@ public class Worker {
     public Shift currentShift() {
         // trzeba przeiterowac się po shifts i znalezc aktualna zmianę albo może trzymać jeszcze w tabelce shift jakąś flagę że dana zmiana to jest 'currentShift'
         // albo może w tabelce workers dla każdego wiersza trzymać pole currentSHift? pomyslimy
+        // no bo można ustawiać zmiany 'na przyszłość'. Jakoś trzeba tę aktualną zmianę wykrywać
         return null;
     }
 
