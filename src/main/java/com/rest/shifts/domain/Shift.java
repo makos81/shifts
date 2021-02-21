@@ -39,6 +39,9 @@ public class Shift {
     @Column(name="WORKER_ID")
     private int workerId;
 
+    // adnotacje
+    private Worker worker;
+
     public Shift() {
     }
 
@@ -46,6 +49,14 @@ public class Shift {
         this.from = from;
         this.to = to;
         this.workerId = workerId;
+    }
+
+    public void assigneTo(Worker worker) {
+        // tu metody biznesowe, czyli np.: czy nie próbuję przypisać pracownikowi już przypisanej mu zmiany, mogłobyto wyglądać tak mniej więcej:
+        if(worker.startOfCurrentShif().isEqual(from) && worker.sendOfCurrentShif().isEqual(to)) {
+            throw new RuntimeException("Worker has already assigned shift");
+        }
+        // i teraz czy nie jest to druga zmiana z rzędu.
     }
 
     public int getId() {
