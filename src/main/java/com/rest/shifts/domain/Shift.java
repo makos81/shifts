@@ -49,7 +49,10 @@ public class Shift {
     }
 
     // te metode potem wywolasz w serwisie. I w serwisie już nie będziesz musiał sprawdzać reguł typu czy to druga zmiana z rzedu czy nie,
-    // bo ta metoda biznesowa to kontroluje. Nikt nigdy nie zapomni zatem sprawdzic tych regul bo sa one zakotwiczone tutaj.
+    // bo ta metoda biznesowa to kontroluje. Gdyby trzeba zawsze w serwisie sprawdzac te reguly przy przypisywaniu zmiany pracownikowi, to
+    // to ktoś mógłby zapomnieć w serwisie sprawdzić tych reguł. A dzięki temu, że
+    // mamy je w assignTo() to nie trzeba się o to martwić, bo ta metoda przypisywania sama się waliduje - sama dba o reguły biznesowe
+    // Moge więc tę metodę wywoływać wszędzie gdzie potrzebuje w mojej aplikacji nie musząc pamiętać o zakodowaniu zawsze reguł.
     public void assignTo(Worker worker) {
         // tu reguły biznesowe, czyli np.: czy nie próbuję przypisać pracownikowi już przypisanej mu zmiany, mogłobyto wyglądać tak mniej więcej:
         // ten if tylko na wzór
