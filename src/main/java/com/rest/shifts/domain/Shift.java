@@ -51,12 +51,16 @@ public class Shift {
     public void assignTo(Worker worker) {
         // tu reguły biznesowe, czyli np.: czy nie próbuję przypisać pracownikowi już przypisanej mu zmiany, mogłobyto wyglądać tak mniej więcej:
         // ten if tylko na wzór
-        if(worker.startOfCurrentShift().isEqual(from) && worker.endOfCurrentShift().isEqual(to)) {
+        if(isOverlappingWithCurrentShift(worker)) {
             throw new RuntimeException("Worker has already assigned shift");
         }
         // i teraz czy nie jest to druga zmiana z rzędu.
         // jakbyś chciał tutaj na przykład się przeiterować przez wszystkie zmiany przypisane do pracownika to użyj worker.allAssignedShifts, jakbyś potrzebował innych to dodawaj swoje. dzięki
         // temu mamy enkapsulację i jasne nazwy metod.
+    }
+
+    private boolean isOverlappingWithCurrentShift(Worker worker) {
+        return worker.startOfCurrentShift().isEqual(from) && worker.endOfCurrentShift().isEqual(to);
     }
 
     public int getId() {
