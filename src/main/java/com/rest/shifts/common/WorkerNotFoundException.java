@@ -1,4 +1,4 @@
 package com.rest.shifts.common;
 
-public class WorkerNotFoundException extends RuntimeException{
+public class WorkerNotFoundException extends Exception{
 }

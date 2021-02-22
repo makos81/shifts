@@ -14,10 +14,11 @@ public class ShiftsMapper {
     }
 
     public Shift mapToShift(ShiftDto shiftDto){
-        return new Shift(
+        Shift shift = new Shift(
                 shiftDto.getFrom(),
-                shiftDto.getTo(),
-                shiftDto.getWorkerList()
+                shiftDto.getTo()
         );
+        shift.setWorkerList(shiftDto.getWorkerList());
+        return shift;
     }
 }

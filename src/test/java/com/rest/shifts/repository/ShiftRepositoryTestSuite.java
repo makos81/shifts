@@ -7,13 +7,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class DbServiceWorkerTest {
+public class ShiftRepositoryTestSuite {
     @Autowired
     private ShiftRepository shiftRepository;
     @Autowired
@@ -24,7 +25,6 @@ public class DbServiceWorkerTest {
         //given
         Shift shift = new Shift(LocalDateTime.of(2021,02,20,10,0),
                 LocalDateTime.of(2021,02,20,18,0));
-
         //when
         shiftRepository.save(shift);
         int id = shift.getId();
@@ -34,16 +34,30 @@ public class DbServiceWorkerTest {
     }
 
     @Test
-    public void savingWorker(){
+    public void gettingShift(){
         //given
-        Worker worker = new Worker("maciej", "ra");
-
+        Shift shift = new Shift(LocalDateTime.of(2021,02,20,10,0),
+                LocalDateTime.of(2021,02,20,18,0));
         //when
-        workerRepository.save(worker);
-        int id = worker.getId();
+        shiftRepository.save(shift);
+        int id = shift.getId();
         //then
-        Assertions.assertNotEquals(0, id);
-        workerRepository.deleteById(id);
-
+        Assertions.assertEquals(id, shiftRepository.findById(id).get().getId());
+        shiftRepository.deleteById(id);
     }
+
+    @Test
+    public void getShiftBetweenDates(){
+        //given
+        LocalDateTime from = LocalDateTime.of(2021,02,20,10,0);
+        LocalDateTime to = LocalDateTime.of(2021,02,20,18,0);
+        Shift shift = new Shift(from, to);
+        //when
+        shiftRepository.save(shift);
+        int id = shift.getId();
+        //then
+        Assertions.assertEquals(id, shiftRepository.getShift(from, to).getId());
+        shiftRepository.deleteById(id);
+    }
+
 }

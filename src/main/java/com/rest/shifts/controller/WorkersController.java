@@ -1,15 +1,15 @@
 package com.rest.shifts.controller;
 
-import com.rest.shifts.common.WorkerNotFoundException;
+import com.rest.shifts.common.*;
 import com.rest.shifts.domain.Worker;
-import com.rest.shifts.common.WorkerDto;
 import com.rest.shifts.mapper.WorkerMapper;
-import com.rest.shifts.repository.ShiftRepository;
 import com.rest.shifts.repository.WorkerRepository;
 import com.rest.shifts.services.WorkerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,7 +48,7 @@ public class WorkersController {
     @RequestMapping(method = RequestMethod.PUT, value = "updateWorker")
     public WorkerDto updateWorker(@RequestBody WorkerDto workerDto){
         Worker worker = workerMapper.mapToWorker(workerDto);
-        Worker savedWorker = workerRepository.save(worker);
+        workerRepository.save(worker);
         return workerMapper.mapToWorkerDto(worker);
     }
 
@@ -58,7 +58,16 @@ public class WorkersController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value="assignShiftToWorker")
-    public void assignShiftToWorker(int shiftId, int workerId){
-        workerService.assignShiftToWorker(workerId, shiftId);
+    public ResponseEntity assignShiftToWorker(int shiftId, int workerId){
+        try{
+            workerService.assignShiftToWorker(workerId, shiftId);
+        }catch(TwoShiftsInRowException e){
+            return new ResponseEntity(new ApiError("Two shifts in a row"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }catch(WorkerNotFoundException e){
+            return new ResponseEntity(new ApiError("Worker not found"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }catch(ShiftNotFoundException e){
+            return new ResponseEntity(new ApiError("Shift not found"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

@@ -25,4 +25,5 @@ public class ShiftService {
             throw new ShiftAlreadyDefined();
         }
         shiftRepository.save(shift);}
+
 }

@@ -1,10 +1,7 @@
 package com.rest.shifts.services;
 
-import com.rest.shifts.common.ShiftAlreadyDefined;
-import com.rest.shifts.common.TwoShiftsInRowException;
-import com.rest.shifts.common.WorkerNotFoundException;
+import com.rest.shifts.common.*;
 import com.rest.shifts.domain.Shift;
-import com.rest.shifts.common.ShiftDto;
 import com.rest.shifts.domain.Worker;
 import com.rest.shifts.mapper.ShiftsMapper;
 
@@ -27,13 +24,14 @@ public class WorkerService {
     @Autowired
     private ShiftsMapper shiftsMapper;
 
-    public List<Shift> getShiftsForWorker(int workerId) {
+    public List<Shift> getShiftsForWorker(int workerId) throws WorkerNotFoundException{
         Worker worker = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
         return worker.getShifts();
     }
 
-    public void assignShiftToWorker(int workerId, int shiftId) {
-        Shift currentShift = shiftRepository.findById(shiftId).orElseThrow(ShiftAlreadyDefined::new);
+    public void assignShiftToWorker(int workerId, int shiftId) throws ShiftNotFoundException, WorkerNotFoundException,
+            TwoShiftsInRowException{
+        Shift currentShift = shiftRepository.findById(shiftId).orElseThrow(ShiftNotFoundException::new);
         ShiftDto currentShiftDto = shiftsMapper.mapToDto(currentShift);
         Worker worker = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
 
@@ -42,10 +40,10 @@ public class WorkerService {
             saveShift(currentShiftDto, worker);
         } else {
             shiftList.sort(Comparator.comparing(Shift::getTo));
-            Shift latestShift = shiftList.get(shiftList.size()-1);
-            ShiftDto latestShiftDto = shiftsMapper.mapToDto(latestShift);
+            Shift previousShift = shiftList.get(shiftList.size()-1);
+            ShiftDto latestShiftDto = shiftsMapper.mapToDto(previousShift);
 
-            if (hoursBetweenCurrentAndPassedShift(latestShift) < HOURS_THRESHOLD) {
+            if (hoursBetweenCurrentAndPassedShift(previousShift, currentShift) < HOURS_THRESHOLD) {
                 throw new TwoShiftsInRowException();
             } else {
                 shiftRepository.save(shiftsMapper.mapToShift(latestShiftDto));
@@ -53,8 +51,8 @@ public class WorkerService {
         }
     }
 
-    private long hoursBetweenCurrentAndPassedShift(Shift latestShift) {
-        return ChronoUnit.HOURS.between(latestShift.getTo(), latestShift.getFrom());
+    private long hoursBetweenCurrentAndPassedShift(Shift previousShift, Shift currentShift) {
+        return ChronoUnit.HOURS.between(previousShift.getTo(), currentShift.getFrom());
     }
 
     private void saveShift(ShiftDto currentShiftDto, Worker worker) {
